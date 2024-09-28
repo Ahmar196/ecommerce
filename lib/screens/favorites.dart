@@ -1,3 +1,5 @@
+import 'package:ecommerce/screens/home_screen.dart';
+import 'package:ecommerce/screens/navigation_screen.dart';
 import 'package:ecommerce/view_model/FavoritesVM.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +12,16 @@ class FavoritesScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Favorite Items (${favorites.length})'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+         onPressed: () {
+              
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NavigationScreen()), 
+              );
+            },
+        ),
       ),
       body: ListView.builder(
         itemCount: favorites.length,
@@ -23,8 +35,12 @@ class FavoritesScreen extends StatelessWidget {
               trailing: IconButton(
                 icon: Icon(Icons.favorite, color: Colors.red),
                 onPressed: () {
-                  context.read<FavoritesVM>().toggleFavorite(productIndex);
-                },
+              
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()), 
+              );
+            },
               ),
             ),
           );

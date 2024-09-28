@@ -1,4 +1,6 @@
 import 'package:ecommerce/screens/PaymentMethodScreen.dart';
+
+import 'package:ecommerce/screens/navigation_screen.dart';
 import 'package:ecommerce/view_model/view_model.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -20,9 +22,13 @@ class _CartScreenState extends State<CartScreen> {
         title: Text('Cart'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+         onPressed: () {
+              
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NavigationScreen()), 
+              );
+            },
         ),
       ),
       body: Consumer<CartVM>(

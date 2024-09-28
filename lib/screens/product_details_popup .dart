@@ -1,5 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:ecommerce/model/model.dart';
-import 'package:ecommerce/screens/cart_screen.dart';
+import 'package:ecommerce/screens/PaymentMethodScreen.dart';
+
 import 'package:ecommerce/view_model/view_model.dart';
 import 'package:ecommerce/widget/container_widget_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -88,7 +91,8 @@ class ProductDetailsPopUp extends StatelessWidget {
                                 children: [
                                   for (var i = 0; i < 4; i++)
                                     Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 5),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5),
                                       height: 25,
                                       width: 25,
                                       decoration: BoxDecoration(
@@ -105,16 +109,20 @@ class ProductDetailsPopUp extends StatelessWidget {
                                   return Row(
                                     children: [
                                       IconButton(
-                                        icon: Icon(CupertinoIcons.minus, color: Colors.greenAccent),
+                                        icon: Icon(CupertinoIcons.minus,
+                                            color: Colors.greenAccent),
                                         onPressed: () {
-                                          if (product.quantity >= product.quantity ) {
+                                          if (product.quantity >=
+                                              product.quantity) {
                                             cartVM.decrementQuantity(product);
                                           }
                                         },
                                       ),
                                       Text(
                                         "${product.quantity}",
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700),
                                       ),
                                       IconButton(
                                         icon: Icon(CupertinoIcons.plus),
@@ -123,7 +131,8 @@ class ProductDetailsPopUp extends StatelessWidget {
                                         },
                                       ),
                                       IconButton(
-                                        icon: Icon(CupertinoIcons.trash, color: Colors.red),
+                                        icon: Icon(CupertinoIcons.trash,
+                                            color: Colors.red),
                                         onPressed: () {
                                           cartVM.removeFromCart(product);
                                         },
@@ -159,7 +168,8 @@ class ProductDetailsPopUp extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => CartScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => PaymentMethodScreen()),
                         );
                       },
                       child: ContainerWidgetModel(

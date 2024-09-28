@@ -1,5 +1,6 @@
 import 'package:ecommerce/screens/cart_screen.dart';
 import 'package:ecommerce/screens/favorites.dart';
+import 'package:ecommerce/screens/orderlist.dart';
 import 'package:ecommerce/screens/profile_screen.dart';
 import 'package:ecommerce/screens/home_screen.dart';
 import 'package:ecommerce/view_model/FavoritesVM.dart';
@@ -36,11 +37,15 @@ class _NavigationScreenState extends State<NavigationScreen> {
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-           // border: Border.all(color: Color(0xffdb3022), width: 3), // Circular border
+            // border: Border.all(color: Color(0xffdb3022), width: 3), // Circular border
           ),
           child: FloatingActionButton(
             onPressed: () {
-              // Add functionality for floating action button if needed
+              // Navigate to Order List Screen when the FAB is pressed
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => OrderListScreen()), // Replace with your Order List Screen
+              );
             },
             child: Icon(
               Icons.qr_code,

@@ -1,28 +1,26 @@
 [
-      {
-        "image": "assets/images/image1.jpg",
-        "title": "Warm Zipper",
-        "price": "$30",
-        "reviews": 30
-      },
-      {
-        "image": "assets/images/image2.jpg",
-        "title": "Knitted Wool",
-        "price": "$40",
-        "reviews": 40
-      },
-      {
-        "image": "assets/images/image3.jpg",
-        "title": "Zipper Win",
-        "price": "$50",
-        "reviews": 50
-      },
-      {
-        "image": "assets/images/image4.jpg",
-        "title": "Child Win",
-        "price": "$60",
-        "reviews": 60
-      }
-    ]
-  
-  
+    {
+      "image": "assets/images/image1.jpg",
+      "title": "Warm Zipper",
+      "price": "$30",
+      "reviews": 30
+    },
+    {
+      "image": "assets/images/image2.jpg",
+      "title": "Knitted Wool",
+      "price": "$40",
+      "reviews": 40
+    },
+    {
+      "image": "assets/images/image3.jpg",
+      "title": "Zipper Win",
+      "price": "$50",
+      "reviews": 50
+    },
+    {
+      "image": "assets/images/image4.jpg",
+      "title": "Child Win",
+      "price": "$60",
+      "reviews": 60
+    }
+  ]

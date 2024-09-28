@@ -46,10 +46,42 @@ class _HomeScreenState extends State<HomeScreen> {
     "60",
   ];
 
+  // Search-related fields
+  TextEditingController _searchController = TextEditingController();
+  List filteredProducts = [];
+
   // State variable to keep track of the selected tab
   int selectedTabIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    // Initially show all products
+    filteredProducts = List.from(productTitles);
+  }
+
+  // Method to filter products based on search input
+  void _filterProducts(String query) {
+    setState(() {
+      filteredProducts = productTitles
+          .where(
+              (product) => product.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+
+      // If no products match and selected tab index is 1 or 2, reset to show the default list
+      if (filteredProducts.isEmpty &&
+          (selectedTabIndex == 1 || selectedTabIndex == 2)) {
+        filteredProducts = [];
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -72,6 +104,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: TextFormField(
+                          controller: _searchController,
+                          onChanged: (value) {
+                            _filterProducts(value);
+                          },
                           decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.search,
@@ -115,7 +151,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.asset('assets/images/freed.png', fit: BoxFit.cover),
+                    child: Image.asset('assets/images/freed.png',
+                        fit: BoxFit.cover),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -129,7 +166,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
                         setState(() {
-                          selectedTabIndex = index; // Update the selected tab index
+                          selectedTabIndex =
+                              index; // Update the selected tab index
+                          // Reset the filteredProducts when changing tabs
+                          if (index == 0) {
+                            filteredProducts = List.from(productTitles);
+                          } else if (index == 1 || index == 2) {
+                            filteredProducts = List.from(
+                                productTitles); // Filter for specific tabs if needed
+                          }
                         });
                       },
                       child: Container(
@@ -155,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
-                if ( selectedTabIndex == 0) // "All" or "Recommended"
+                if (selectedTabIndex == 0)
                   // Horizontal Product List
                   SizedBox(
                     height: 180,
@@ -177,7 +222,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => ProductScreen(imageIndex: index), // Pass imageIndex here
+                                          builder: (context) => ProductScreen(
+                                              imageIndex:
+                                                  index), // Pass imageIndex here
                                         ),
                                       );
                                     },
@@ -186,7 +233,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: Image.asset(
                                         imagelist[index],
                                         height: 200,
-                                        width: MediaQuery.of(context).size.width * 0.4,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -196,19 +245,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                     top: 8,
                                     child: GestureDetector(
                                       onTap: () {
-                                        context.read<FavoritesVM>().toggleFavorite(index);
+                                        context
+                                            .read<FavoritesVM>()
+                                            .toggleFavorite(index);
                                       },
                                       child: Container(
                                         height: 24,
                                         width: 24,
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.circular(12),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
                                         ),
                                         child: Center(
                                           child: Icon(
                                             Icons.favorite,
-                                            color: context.watch<FavoritesVM>().isFavorite(index)
+                                            color: context
+                                                    .watch<FavoritesVM>()
+                                                    .isFavorite(index)
                                                 ? Color(0xFFDB3022)
                                                 : Colors.grey,
                                             size: 16,
@@ -277,7 +331,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
-                    // Newest Products Section
+                SizedBox(height: 10),
+
+                // Newest Products Section
+                if (selectedTabIndex == 0)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -292,127 +349,159 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      // Grid View of Products
-                      GridView.builder(
-                        itemCount: productTitles.length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.75,
-                          crossAxisSpacing: 8,
-                          mainAxisSpacing: 8,
-                        ),
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.only(right: 15),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: MediaQuery.of(context).size.width * 0.4, // Flexible image size
-                                  child: Stack(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ProductScreen(imageIndex: index), // Pass imageIndex here
+                      // Check if filteredProducts is empty
+                      if (filteredProducts.isEmpty)
+                        Column(
+                          children: [
+                            Center(
+                              child: Text(
+                                'Product Not Found',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.search,
+                              color: Colors.red,
+                              size: 150,
+                            ),
+                          ],
+                        )
+                      else
+                        // Grid View of Products
+                        GridView.builder(
+                          itemCount: filteredProducts.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.75,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
+                          ),
+                          itemBuilder: (context, index) {
+                            // Use the index to display filtered products
+                            final productIndex =
+                                productTitles.indexOf(filteredProducts[index]);
+
+                            return Container(
+                              margin: EdgeInsets.only(right: 15),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.width *
+                                        0.4, // Flexible image size
+                                    child: Stack(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductScreen(
+                                                        imageIndex:
+                                                            productIndex),
+                                              ),
+                                            );
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Image.asset(
+                                              imagelist[productIndex],
+                                              height: 200,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              fit: BoxFit.cover,
                                             ),
-                                          );
-                                        },
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            imagelist[index],
-                                               height: 200,
-                                      width: MediaQuery.of(context).size.width * 0.4,
-                                            fit: BoxFit.cover,
                                           ),
                                         ),
-                                      ),
-                                      Positioned(
-                                        right: 8,
-                                        top: 8,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            context.read<FavoritesVM>().toggleFavorite(index);
-                                          },
-                                          child: Container(
-                                            height: 24,
-                                            width: 24,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                            child: Center(
-                                              child: Icon(
-                                                Icons.favorite,
-                                                color: context.watch<FavoritesVM>().isFavorite(index)
-                                                    ? Color(0xFFDB3022)
-                                                    : Colors.grey,
-                                                size: 16,
+                                        Positioned(
+                                          right: 8,
+                                          top: 8,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              context
+                                                  .read<FavoritesVM>()
+                                                  .toggleFavorite(productIndex);
+                                            },
+                                            child: Container(
+                                              height: 24,
+                                              width: 24,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.favorite,
+                                                  color: context
+                                                          .watch<FavoritesVM>()
+                                                          .isFavorite(
+                                                              productIndex)
+                                                      ? Color(0xFFDB3022)
+                                                      : Colors.grey,
+                                                  size: 16,
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    productTitles[productIndex],
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                        size: 16,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        '(${reviews[productIndex]})',
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        '${prices[productIndex]}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xffdb3022),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  productTitles[index],
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(height: 5),
-                                // Text(
-                                //   'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-                                //   style: TextStyle(
-                                //     fontSize: 12,
-                                //     color: Colors.black,
-                                //   ),
-                                // ),
-                                SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                      size: 16,
-                                    ),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      '(${reviews[index]})',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      '${prices[index]}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFFDB3022),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                     ],
                   ),
 
-                // Conditionally Render Product Lists
-                if ( selectedTabIndex == 3) // "All" or "Recommended"
+                if (selectedTabIndex == 3)
                   // Horizontal Product List
                   SizedBox(
                     height: 180,
@@ -434,7 +523,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => ProductScreen(imageIndex: index), // Pass imageIndex here
+                                          builder: (context) => ProductScreen(
+                                              imageIndex:
+                                                  index), // Pass imageIndex here
                                         ),
                                       );
                                     },
@@ -443,7 +534,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: Image.asset(
                                         imagelist[index],
                                         height: 200,
-                                        width: MediaQuery.of(context).size.width * 0.4,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -453,19 +546,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                     top: 8,
                                     child: GestureDetector(
                                       onTap: () {
-                                        context.read<FavoritesVM>().toggleFavorite(index);
+                                        context
+                                            .read<FavoritesVM>()
+                                            .toggleFavorite(index);
                                       },
                                       child: Container(
                                         height: 24,
                                         width: 24,
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.circular(12),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
                                         ),
                                         child: Center(
                                           child: Icon(
                                             Icons.favorite,
-                                            color: context.watch<FavoritesVM>().isFavorite(index)
+                                            color: context
+                                                    .watch<FavoritesVM>()
+                                                    .isFavorite(index)
                                                 ? Color(0xFFDB3022)
                                                 : Colors.grey,
                                             size: 16,
@@ -533,9 +631,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       },
                     ),
-                  )
-                else if (selectedTabIndex == 1 || selectedTabIndex == 2) // "Category" or "TOP"
-                  // Newest Products Section
+                  ),
+                SizedBox(height: 10),
+                // Newest Products Section
+                if (selectedTabIndex == 1 ||
+                    selectedTabIndex ==
+                        2) // Show only if selected tab is "Category" or "TOP"
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -550,122 +651,146 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      // Grid View of Products
-                      GridView.builder(
-                        itemCount: productTitles.length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.75,
-                          crossAxisSpacing: 8,
-                          mainAxisSpacing: 8,
-                        ),
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.only(right: 15),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: MediaQuery.of(context).size.width * 0.4, // Flexible image size
-                                  child: Stack(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ProductScreen(imageIndex: index), // Pass imageIndex here
+                      // Check if filteredProducts is empty
+                      if (filteredProducts.isEmpty)
+                        Center(
+                          child: Text(
+                            'Product Not Found',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                        )
+                      else
+                        // Grid View of Products
+                        GridView.builder(
+                          itemCount: filteredProducts.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.75,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
+                          ),
+                          itemBuilder: (context, index) {
+                            // Use the index to display filtered products
+                            final productIndex =
+                                productTitles.indexOf(filteredProducts[index]);
+
+                            return Container(
+                              margin: EdgeInsets.only(right: 15),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.width *
+                                        0.4, // Flexible image size
+                                    child: Stack(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductScreen(
+                                                        imageIndex:
+                                                            productIndex),
+                                              ),
+                                            );
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Image.asset(
+                                              imagelist[productIndex],
+                                              height: 200,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              fit: BoxFit.cover,
                                             ),
-                                          );
-                                        },
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            imagelist[index],
-                                               height: 200,
-                                      width: MediaQuery.of(context).size.width * 0.4,
-                                            fit: BoxFit.cover,
                                           ),
                                         ),
-                                      ),
-                                      Positioned(
-                                        right: 8,
-                                        top: 8,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            context.read<FavoritesVM>().toggleFavorite(index);
-                                          },
-                                          child: Container(
-                                            height: 24,
-                                            width: 24,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                            child: Center(
-                                              child: Icon(
-                                                Icons.favorite,
-                                                color: context.watch<FavoritesVM>().isFavorite(index)
-                                                    ? Color(0xFFDB3022)
-                                                    : Colors.grey,
-                                                size: 16,
+                                        Positioned(
+                                          right: 8,
+                                          top: 8,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              context
+                                                  .read<FavoritesVM>()
+                                                  .toggleFavorite(productIndex);
+                                            },
+                                            child: Container(
+                                              height: 24,
+                                              width: 24,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.favorite,
+                                                  color: context
+                                                          .watch<FavoritesVM>()
+                                                          .isFavorite(
+                                                              productIndex)
+                                                      ? Color(0xFFDB3022)
+                                                      : Colors.grey,
+                                                  size: 16,
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    productTitles[productIndex],
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                        size: 16,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        '(${reviews[productIndex]})',
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        '${prices[productIndex]}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xffdb3022),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  productTitles[index],
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(height: 5),
-                                // Text(
-                                //   'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-                                //   style: TextStyle(
-                                //     fontSize: 12,
-                                //     color: Colors.black,
-                                //   ),
-                                // ),
-                                SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                      size: 16,
-                                    ),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      '(${reviews[index]})',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      '${prices[index]}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFFDB3022),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                     ],
                   ),
               ],

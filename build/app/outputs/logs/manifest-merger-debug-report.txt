@@ -23,6 +23,7 @@ INJECTED from D:\flutter_project\ecommerce\android\app\src\main\AndroidManifest.
 INJECTED from D:\flutter_project\ecommerce\android\app\src\main\AndroidManifest.xml:1:1-45:12
 INJECTED from D:\flutter_project\ecommerce\android\app\src\main\AndroidManifest.xml:1:1-45:12
 MERGED from D:\flutter_project\ecommerce\android\app\src\main\AndroidManifest.xml:1:1-45:12
+MERGED from [:shared_preferences_android] D:\flutter_project\ecommerce\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.fragment:fragment:1.7.1] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\c683cde5b1f5377825fe27da54e1b718\transformed\fragment-1.7.1\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.window:window:1.2.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\d47b1192960df52846144d82ac9e1d6f\transformed\jetified-window-1.2.0\AndroidManifest.xml:17:1-31:12
 MERGED from [androidx.window:window-java:1.2.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\5292c4072ce6d2ab49b0e25db445cdfe\transformed\jetified-window-java-1.2.0\AndroidManifest.xml:17:1-21:12
@@ -40,6 +41,8 @@ MERGED from [androidx.core:core:1.13.1] C:\Users\Mian Ahmar\.gradle\caches\trans
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.7.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\98474e5913354eaede53aaa879a4dd8b\transformed\lifecycle-runtime-2.7.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\d674cd90e13def17f77b3f8010d35e09\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:17:1-35:12
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\aadceac8ee0316c01a9163bad1a5e0ed\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.datastore:datastore-preferences:1.0.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\cb38a9efa74695bcecf2cdc4810f475f\transformed\jetified-datastore-preferences-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.datastore:datastore:1.0.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\3314cb25a5330f11bf2a55b7a9a310ab\transformed\jetified-datastore-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\4d10c72f31024081b56fc5037069e011\transformed\jetified-annotation-experimental-1.4.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\166e5df34c1c015ef6ddeae137513a3f\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:17:1-55:12
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\4ee1d1c3643bd699aea17aa2adbcb7ee\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
@@ -81,6 +84,8 @@ uses-sdk
 INJECTED from D:\flutter_project\ecommerce\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\flutter_project\ecommerce\android\app\src\main\AndroidManifest.xml
 INJECTED from D:\flutter_project\ecommerce\android\app\src\main\AndroidManifest.xml
+MERGED from [:shared_preferences_android] D:\flutter_project\ecommerce\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:shared_preferences_android] D:\flutter_project\ecommerce\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.fragment:fragment:1.7.1] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\c683cde5b1f5377825fe27da54e1b718\transformed\fragment-1.7.1\AndroidManifest.xml:5:5-44
 MERGED from [androidx.fragment:fragment:1.7.1] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\c683cde5b1f5377825fe27da54e1b718\transformed\fragment-1.7.1\AndroidManifest.xml:5:5-44
 MERGED from [androidx.window:window:1.2.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\d47b1192960df52846144d82ac9e1d6f\transformed\jetified-window-1.2.0\AndroidManifest.xml:20:5-44
@@ -115,6 +120,10 @@ MERGED from [androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Mian Ahmar\.gr
 MERGED from [androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\d674cd90e13def17f77b3f8010d35e09\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:21:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\aadceac8ee0316c01a9163bad1a5e0ed\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\aadceac8ee0316c01a9163bad1a5e0ed\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-preferences:1.0.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\cb38a9efa74695bcecf2cdc4810f475f\transformed\jetified-datastore-preferences-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.datastore:datastore-preferences:1.0.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\cb38a9efa74695bcecf2cdc4810f475f\transformed\jetified-datastore-preferences-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.datastore:datastore:1.0.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\3314cb25a5330f11bf2a55b7a9a310ab\transformed\jetified-datastore-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.datastore:datastore:1.0.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\3314cb25a5330f11bf2a55b7a9a310ab\transformed\jetified-datastore-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\4d10c72f31024081b56fc5037069e011\transformed\jetified-annotation-experimental-1.4.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\4d10c72f31024081b56fc5037069e011\transformed\jetified-annotation-experimental-1.4.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Mian Ahmar\.gradle\caches\transforms-3\166e5df34c1c015ef6ddeae137513a3f\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:21:5-44

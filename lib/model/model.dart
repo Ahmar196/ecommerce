@@ -17,3 +17,5 @@ class Product {
     this.isSelected = false, // Default value for isSelected
   });
 }
+
+

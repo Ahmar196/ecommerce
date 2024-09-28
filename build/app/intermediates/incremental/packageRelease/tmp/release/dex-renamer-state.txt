@@ -1,4 +1,0 @@
-#Wed Sep 25 14:22:17 PKT 2024
-base.0=D\:\\flutter_project\\ecommerce\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
