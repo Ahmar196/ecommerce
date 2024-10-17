@@ -1,4 +1,5 @@
 import 'package:ecommerce/screens/confirm_order.dart';
+import 'package:ecommerce/screens/reviewpop.dart';
 import 'package:ecommerce/view_model/view_model.dart';
 import 'package:ecommerce/widget/container_widget_model.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,7 @@ class OrderDetails extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            
+                            // Implement address change functionality
                           },
                           child: Text(
                             "Change",
@@ -152,45 +153,13 @@ class OrderDetails extends StatelessWidget {
               "Delivery Method",
               style: TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
             ),
-            Row(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 60,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 2,
-                        spreadRadius: 4,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        "assets/images/icon3.png", // Correct asset path
-                        height: 20,
-                        fit: BoxFit.contain,
-                      ),
-                      Text('2-3 Days')
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Row(children: [
+            Row(
+              children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     height: 60,
-                    width: 130,
+                    width: 100,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -205,34 +174,66 @@ class OrderDetails extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Home Delivery',
-                          style: TextStyle(
-                              color: Colors.indigo,
-                              fontWeight: FontWeight.w500),
+                        Image.asset(
+                          "assets/images/icon3.png", // Correct asset path
+                          height: 20,
+                          fit: BoxFit.contain,
                         ),
                         Text('2-3 Days')
                       ],
                     ),
                   ),
                 ),
-              ]),
-            ]),
-            SizedBox(
-              height: 50,
+                SizedBox(
+                  width: 15,
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 60,
+                        width: 130,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 2,
+                              spreadRadius: 4,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Home Delivery',
+                              style: TextStyle(
+                                  color: Colors.indigo,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text('2-3 Days')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
+            SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Sub-Total', style: TextStyle(fontSize: 16)),
                 Text(
-                    "\$${cartVM.totalPrice}",
-                    style: TextStyle(
-                      fontSize: 18,
-                    //  fontWeight: FontWeight.w900,
-                     // color: Color(0xFFDB3022),
-                    ),
+                  "\$${cartVM.totalPrice}",
+                  style: TextStyle(
+                    fontSize: 18,
                   ),
+                ),
               ],
             ),
             Padding(
@@ -257,7 +258,7 @@ class OrderDetails extends StatelessWidget {
                   ),
                   // Accessing the totalPrice from cartVM
                   Text(
-                    "\$${cartVM.totalPrice+15}",
+                    "\$${cartVM.totalPrice + 15}",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
@@ -267,25 +268,21 @@ class OrderDetails extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: 40,
-            ),
-            Flexible(
-              child: InkWell(
-                onTap: () {
-                  // Navigate to ConfirmOrder screen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ConfirmOrder()),
-                  );
-                },
-                child: ContainerWidgetModel(
-                  containerWidth: MediaQuery.of(context).size.width,
-                  itext: "Confirm Order",
-                  bgcolor: Color(0xFFDB3022),
-                ),
-              ),
-            ),
+            SizedBox(height: 40),
+           Flexible(
+  child: InkWell(
+    onTap: () {
+      // Show the review modal sheet when Confirm Order is clicked
+      showReviewModalSheet(context);
+    },
+    child: ContainerWidgetModel(
+      containerWidth: MediaQuery.of(context).size.width,
+      itext: "Confirm Order",
+      bgcolor: Color(0xFFDB3022),
+    ),
+  ),
+),
+
           ],
         ),
       ),

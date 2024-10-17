@@ -2,6 +2,29 @@ import 'dart:convert'; // For JSON encoding/decoding
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class Review {
+  final double rating;
+  final String comment;
+
+  Review({required this.rating, required this.comment});
+
+  // Convert a Review object to a Map for saving to SharedPreferences
+  Map<String, dynamic> toJson() {
+    return {
+      'rating': rating,
+      'comment': comment,
+    };
+  }
+
+  // Create a Review object from a Map (from SharedPreferences)
+  factory Review.fromJson(Map<String, dynamic> json) {
+    return Review(
+      rating: json['rating'],
+      comment: json['comment'],
+    );
+  }
+}
+
 class Order {
   final String name;
   final String address;
@@ -9,7 +32,8 @@ class Order {
   final DateTime orderDate;
   final DateTime shippingDate;
   final String status; // Added status field to track order state
-   final DateTime? estimatedDeliveryDate;
+  final DateTime? estimatedDeliveryDate;
+  final List<Review> reviews; // List of reviews
 
   Order({
     required this.name,
@@ -17,8 +41,9 @@ class Order {
     required this.contact,
     required this.orderDate,
     required this.shippingDate,
-    required this.status, // Initialize status
-      this.estimatedDeliveryDate, // Add this line
+    required this.status,
+    this.estimatedDeliveryDate,
+    this.reviews = const [], // Initialize reviews
   });
 
   // Convert an Order object to a Map for saving to SharedPreferences
@@ -29,7 +54,8 @@ class Order {
       'contact': contact,
       'orderDate': orderDate.toIso8601String(),
       'shippingDate': shippingDate.toIso8601String(),
-      'status': status, // Include status
+      'status': status,
+      'reviews': reviews.map((review) => review.toJson()).toList(), // Include reviews
     };
   }
 
@@ -41,12 +67,13 @@ class Order {
       contact: json['contact'],
       orderDate: DateTime.parse(json['orderDate']),
       shippingDate: DateTime.parse(json['shippingDate']),
-      status: json['status'], // Retrieve status
+      status: json['status'],
+      reviews: (json['reviews'] as List<dynamic>?) // Check for null here
+          ?.map((review) => Review.fromJson(review))
+          .toList() ?? [], // Provide an empty list if null
     );
   }
 }
-
-
 
 class OrderVM with ChangeNotifier {
   List<Order> _orders = [];
@@ -72,11 +99,22 @@ class OrderVM with ChangeNotifier {
       orderDate: currentDate,
       shippingDate: shippingDate,
       status: 'Order Placed', // Default initial status
+      reviews: [], // Initialize with no reviews
     );
 
     _orders.add(newOrder);
     _saveOrdersToPreferences(); // Save the updated orders list
     notifyListeners(); // Notify listeners to update the UI
+  }
+
+  // Method to add a review to an existing order
+  void addReviewToOrder(int orderIndex, double rating, String comment) {
+    if (orderIndex >= 0 && orderIndex < _orders.length) {
+      Review newReview = Review(rating: rating, comment: comment);
+      _orders[orderIndex].reviews.add(newReview); // Add review to the specific order
+      _saveOrdersToPreferences(); // Save the updated orders list
+      notifyListeners(); // Notify listeners to update the UI
+    }
   }
 
   // Method to update an existing order's status
@@ -89,6 +127,7 @@ class OrderVM with ChangeNotifier {
         orderDate: _orders[index].orderDate,
         shippingDate: _orders[index].shippingDate,
         status: newStatus, // Update the status
+        reviews: _orders[index].reviews, // Retain reviews
       );
       _saveOrdersToPreferences(); // Save the updated list
       notifyListeners(); // Notify listeners to update the UI
@@ -126,4 +165,3 @@ class OrderVM with ChangeNotifier {
     }
   }
 }
-
